@@ -37,15 +37,19 @@ if (empty($data)) {
     exit;
 }
 
-// Aggregate data by Name and calculate sum of DocTotal
+// Aggregate data by CntctCode and calculate sum of DocTotal
 $sums = [];
 foreach ($data as $item) {
+    $cntctCode = $item['CntctCode'];
     $name = $item['Name'];
     $docTotal = $item['DocTotal'];
-    if (!isset($sums[$name])) {
-        $sums[$name] = 0;
+    if (!isset($sums[$cntctCode])) {
+        $sums[$cntctCode] = [
+            'Name' => $name,
+            'TotalDocTotal' => 0
+        ];
     }
-    $sums[$name] += $docTotal;
+    $sums[$cntctCode]['TotalDocTotal'] += $docTotal;
 }
 
 ?>
@@ -83,15 +87,17 @@ foreach ($data as $item) {
     <table>
         <thead>
             <tr>
+                <th>CntctCode</th>
                 <th>Name</th>
                 <th>Total DocTotal</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($sums as $name => $total): ?>
+            <?php foreach ($sums as $cntctCode => $info): ?>
                 <tr>
-                    <td><?php echo $name; ?></td>
-                    <td><?php echo $total; ?></td>
+                    <td><?php echo $cntctCode; ?></td>
+                    <td><?php echo $info['Name']; ?></td>
+                    <td><?php echo $info['TotalDocTotal']; ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
