@@ -1,6 +1,61 @@
 <?php
 require_once '../Db/Db.conn.php';
-session_start()
+session_start();
+
+// API URL
+$url = "http://10.0.0.237:3000/api/inv";
+
+// Initialize cURL session
+$ch = curl_init();
+
+// Set cURL options
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+// Execute cURL request
+$response = curl_exec($ch);
+
+// Check for errors
+if (curl_error($ch)) {
+    echo 'Error: ' . curl_error($ch);
+    exit;
+}
+
+// Close cURL session
+curl_close($ch);
+
+// Decode JSON response
+$data = json_decode($response, true);
+
+// Check if decoding was successful
+if (!$data) {
+    echo 'Error: Unable to decode JSON response';
+    exit;
+}
+
+// Check if data is empty
+if (empty($data)) {
+    echo 'No data available';
+    exit;
+}
+
+// Aggregate data by CntctCode and calculate sum of DocTotal
+$sums = [];
+foreach ($data as $item) {
+    $cntctCode = $item['CntctCode'];
+    $name = $item['Name'];
+    $docTotal = $item['DocTotal'];
+    $CardName = $item['CardName'];
+    if (!isset($sums[$cntctCode])) {
+        $sums[$cntctCode] = [
+            'Name' => $name,
+            'CardName' => $CardName,
+            'TotalDocTotal' => 0
+        ];
+    }
+    $sums[$cntctCode]['TotalDocTotal'] += $docTotal;
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -11,7 +66,13 @@ session_start()
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>Responsive Dashboard Design #1 | AsmrProg</title>
+    <title>Cubic | Sri Lanka</title>
+
+
+    <!--for sweet alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" ></script>
 </head>
 
 <body>
@@ -31,7 +92,7 @@ session_start()
             </div>
 
             <div class="sidebar">
-                <a href="#" class="active">
+                <a href="#">
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
@@ -138,16 +199,28 @@ session_start()
                 <table>
                     <thead>
                         <tr>
-                            <th>Course Name</th>
-                            <th>Course Number</th>
-                            <th>Payment</th>
-                            <th>Status</th>
-                            <th></th>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Total Invoice</th>
+                            <th>Total Points</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                        <?php foreach ($sums as $cntctCode => $info): ?>
+                            <?php if ($info['TotalDocTotal'] >= 8000000): ?>
+                                <tr>
+                                    <td><?php echo $cntctCode; ?></td>
+                                    <td><?php echo $info['Name']; ?></td>
+                                    <td><?php echo $info['CardName']; ?></td>
+                                    <td><?php echo $info['TotalDocTotal']; ?></td>
+                                    <td>10</td>
+                                </tr>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+
                 </table>
-                <a href="#">Show All</a>
             </div>
             <!-- End of Recent Orders -->
 
