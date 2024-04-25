@@ -17,6 +17,7 @@ $response = curl_exec($ch);
 $totalSales = 0;
 $totalUsers = 0;
 $totalPoints = 0;
+$num = 0;
 // Check for errors
 if (curl_error($ch)) {
     echo 'Error: ' . curl_error($ch);
@@ -44,25 +45,25 @@ if (empty($data)) {
 // Aggregate data by CntctCode and calculate sum of DocTotal
 $sums = [];
 foreach ($data as $item) {
-    $cntctCode = $item['CntctCode'];
+    $PrimayId = $item['Name'];
     $name = $item['Name'];
     $docTotal = $item['DocTotal'];
     $CardName = $item['CardName'];
-    if (!isset($sums[$cntctCode])) {
-        $sums[$cntctCode] = [
+    if (!isset($sums[$PrimayId])) {
+        $sums[$PrimayId] = [
             'Name' => $name,
             'CardName' => $CardName,
             'TotalDocTotal' => 0
         ];
     }
-    $sums[$cntctCode]['TotalDocTotal'] += $docTotal;
+    $sums[$PrimayId]['TotalDocTotal'] += $docTotal;
 }
 
 
 
 // some calculations
 
-foreach ($sums as $cntctCode => $infos){
+foreach ($sums as $PrimayId => $infos){
     $totalSales = $totalSales + $infos['TotalDocTotal'];
     $totalUsers = $totalUsers +1;
 }
@@ -195,7 +196,7 @@ $totalPoints = $totalSales / 100000;
                 <table>
                     <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>No</th>
                             <th>Name</th>
                             <th>Company</th>
                             <th>Total Invoice</th>
@@ -203,10 +204,11 @@ $totalPoints = $totalSales / 100000;
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($sums as $cntctCode => $info): ?>
+                        <?php foreach ($sums as $PrimayId => $info): ?>
                             <?php if ($info['TotalDocTotal'] >= 8000000): ?>
                                 <tr>
-                                    <td><?php echo $cntctCode; ?></td>
+                                    <td><?php $num = $num +1 ; 
+                                    echo $num; ?></td>
                                     <td><?php echo $info['Name']; ?></td>
                                     <td><?php echo $info['CardName']; ?></td>
                                     <td><?php echo "Rs .".number_format($info['TotalDocTotal'], 2, '.', ','); ?></td>
