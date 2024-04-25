@@ -13,7 +13,7 @@ if(isset($_POST['login'])){
     }
 
     //chek email exsist
-    $sql_email = "SELECT * FROM Users WHERE enail = :usermail";
+    $sql_email = "SELECT * FROM Users WHERE userEmail = :usermail";
 
     try {
         $result = $conn->prepare($sql_email);
@@ -23,10 +23,11 @@ if(isset($_POST['login'])){
 
         if($result->rowCount() >0){
             $row = $result -> fetch(PDO::FETCH_ASSOC);
-            $userPass = $row['password'];
+            $userPass = $row['userPassword'];
 
             if($password == $userPass){
-
+                $_SESSION['login sucessfull'] = 1;
+                header("Location: ../../UserPages/userPage.php");
             }else{
                 $_SESSION['wrong_pass'] = 1;
                 header("Location: ../../index.php");

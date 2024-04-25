@@ -10,9 +10,16 @@ session_start();
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Login Form | CodingLab</title> 
+     <title>Cubic Login</title> 
     <link rel="stylesheet" href="./Asserts/CSS/Style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+
+    <!-- sweet alert start -->
+    <!--for sweet alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" ></script>
+    <!-- end of sweet alert -->
   </head>
   <body>
     <div class="container">
@@ -34,6 +41,40 @@ session_start();
         </form>
       </div>
     </div>
-
   </body>
+
+  <!--for sweet alert-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" ></script>
+
+    <?php
+    
+    if($_SESSION['wrong_email'] == 1){
+        echo '
+                <script>
+                Swal.fire({
+					icon: "error",
+					title: "Oops...",
+					text: "Wrong Email !",
+				  });
+                  </script>
+                '
+                ;
+	    $_SESSION['wrong_email'] = null;
+    }else if($_SESSION['wrong_pass'] == 1){
+        echo '
+                <script>
+                Swal.fire({
+					icon: "error",
+					title: "Oops...",
+					text: "Wrong Password !",
+				  });
+                  </script>
+                '
+                ;
+	    $_SESSION['wrong_pass'] = null;
+    }
+    
+    ?>
 </html>
