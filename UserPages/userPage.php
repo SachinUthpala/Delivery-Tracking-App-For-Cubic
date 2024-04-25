@@ -14,7 +14,9 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 // Execute cURL request
 $response = curl_exec($ch);
-
+$totalSales = 0;
+$totalUsers = 0;
+$totalPoints = 0;
 // Check for errors
 if (curl_error($ch)) {
     echo 'Error: ' . curl_error($ch);
@@ -55,6 +57,21 @@ foreach ($data as $item) {
     }
     $sums[$cntctCode]['TotalDocTotal'] += $docTotal;
 }
+
+
+
+// some calculations
+
+foreach ($sums as $cntctCode => $infos){
+    $totalSales = $totalSales + $infos['TotalDocTotal'];
+    $totalUsers = $totalUsers +1;
+}
+
+//sales 100000 = 1 point
+
+$totalPoints = $totalSales / 100000;
+
+
 
 
 ?>
@@ -144,48 +161,27 @@ foreach ($data as $item) {
                     <div class="status">
                         <div class="info">
                             <h3>Total Sales</h3>
-                            <h1>$65,024</h1>
+                            <h1 style="padding-left:10px"><?php echo "Rs.".number_format($totalSales, 2, '.', ','); ?></h1>
                         </div>
-                        <div class="progresss">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="percentage">
-                                
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="visits">
                     <div class="status">
                         <div class="info">
-                            <h3>Site Visit</h3>
-                            <h1>24,981</h1>
+                            <h3>Total Customrs</h3>
+                            <h1 style="padding-left:10px"><?php echo $totalUsers; ?></h1>
                         </div>
-                        <div class="progresss">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="percentage">
-                                
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="searches">
                     <div class="status">
                         <div class="info">
-                            <h3>Searches</h3>
-                            <h1>14,147</h1>
+                            <h3>Total Points</h3>
+                            <h1 style="padding-left:10px"><?php echo number_format($totalPoints, 2, '.', ','); ?></h1>
                         </div>
-                        <div class="progresss">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="percentage">
-                                
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -195,7 +191,7 @@ foreach ($data as $item) {
 
             <!-- Recent Orders Table -->
             <div class="recent-orders">
-                <h2>Recent Orders</h2>
+                <h2>Top Buyers</h2>
                 <table>
                     <thead>
                         <tr>
@@ -213,8 +209,9 @@ foreach ($data as $item) {
                                     <td><?php echo $cntctCode; ?></td>
                                     <td><?php echo $info['Name']; ?></td>
                                     <td><?php echo $info['CardName']; ?></td>
-                                    <td><?php echo $info['TotalDocTotal']; ?></td>
-                                    <td>10</td>
+                                    <td><?php echo "Rs .".number_format($info['TotalDocTotal'], 2, '.', ','); ?></td>
+                                    <td><?php $userPoints = $info['TotalDocTotal'] / 100000;
+                                    echo number_format($userPoints, 2, '.', ','); ?></td>
                                 </tr>
                             <?php endif; ?>
                         <?php endforeach; ?>
