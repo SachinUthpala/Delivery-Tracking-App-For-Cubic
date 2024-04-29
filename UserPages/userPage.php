@@ -116,6 +116,12 @@ $totalPoints = $totalSales / 100000;
             </div>
 
             <div class="sidebar">
+                <a href="../Db/configs/InsertData.php">
+                    <span class="material-icons-sharp">
+                        not_started
+                    </span>
+                    <h3>Start Day</h3>
+                </a>
                 <a href="#">
                     <span class="material-icons-sharp">
                         dashboard
