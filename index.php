@@ -10,7 +10,7 @@ session_start();
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Cubic Login</title> 
+     <title>Cubik Login</title> 
     <link rel="stylesheet" href="./Asserts/CSS/Style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
 
@@ -24,7 +24,7 @@ session_start();
   <body>
     <div class="container">
       <div class="wrapper">
-        <div class="title"><span>Cubic Login Form</span></div>
+        <div class="title"><span>Cubik Delivery Login</span></div>
         <form action="./Db/configs/login.php" method="post">
           <div class="row">
             <i class="fas fa-user"></i>
@@ -74,7 +74,19 @@ session_start();
                 '
                 ;
 	    $_SESSION['wrong_pass'] = null;
-    }
+    }else if($_SESSION['API_NOT_WORKING'] == 1){
+      echo '
+              <script>
+              Swal.fire({
+        icon: "error",
+        title: "Api Is Not Working...",
+        text: "Api Is Not Working. Please Contact Your System Administrator !",
+        });
+                </script>
+              '
+              ;
+    $_SESSION['API_NOT_WORKING'] = null;
+  }
     
     ?>
 </html>

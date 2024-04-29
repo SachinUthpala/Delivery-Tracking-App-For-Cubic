@@ -5,6 +5,8 @@ session_start();
 // API URL
 $url = "http://10.0.0.237:3000/api/inv";
 
+
+
 // Initialize cURL session
 $ch = curl_init();
 
@@ -20,8 +22,12 @@ $totalPoints = 0;
 $num = 0;
 // Check for errors
 if (curl_error($ch)) {
-    echo 'Error: ' . curl_error($ch);
+    echo 'Error: '. curl_error($ch);
+    header("Location: ../index.php");
+    $_SESSION['API_NOT_WORKING'] = 1;
     exit;
+}else{
+
 }
 
 // Close cURL session
@@ -84,7 +90,7 @@ $totalPoints = $totalSales / 100000;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>Cubic | Sri Lanka</title>
+    <title>Cubik | Sri Lanka</title>
 
 
     <!--for sweet alert-->
@@ -100,7 +106,7 @@ $totalPoints = $totalSales / 100000;
         <aside>
             <div class="toggle">
                 <div class="logo">
-                    <h2>Cubic<span class="danger"> Lanka</span></h2>
+                    <h2>Cubik<span class="danger"> Lanka</span></h2>
                 </div>
                 <div class="close" id="close-btn">
                     <span class="material-icons-sharp">
