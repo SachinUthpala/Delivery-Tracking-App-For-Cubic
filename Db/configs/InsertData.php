@@ -136,6 +136,66 @@ $n=0;
 //     }
 // }
 
+// foreach ($sums as $PrimayId => $infos){
+//     $CntctCode = $infos['CntctCode'];
+//     $Name = $infos['Name'];
+//     $CardName = $infos['CardName'];
+//     $TotalBuys = $infos['TotalDocTotal'];
+//     $n = $n+1;
+//     // Checking if the username is available
+
+//     $sqlCheck = "SELECT * FROM Deliverys WHERE Name = :Name";
+//     $checkStmt = $conn->prepare($sqlCheck);
+//     $checkStmt->bindParam(":Name", $Name);
+//     $checkStmt->execute();
+
+//     if($checkStmt->rowCount() > 0) {
+//         $row = $checkStmt->fetch(PDO::FETCH_ASSOC);
+//         $Sales = $row['AllDocTotal'];
+//         $existedYear = $row['CurrentYear'];
+
+//         if($existedYear == $year){
+//             $sqlUpdate1 = "UPDATE `Deliverys` SET `CntctCode`=:CntctCode, `CardName`=:CardName, `AllDocTotal`=:AllDocTotal, `ThisYearAllDocTotal`=:ThisYearAllDocTotal , `CurrentYear`=:CurrentYear WHERE Name = :Name";
+//             $sqlUpdate1_Result = $conn->prepare($sqlUpdate1);
+//             $sqlUpdate1_Result->bindParam(":CntctCode", $CntctCode);
+//             $sqlUpdate1_Result->bindParam(":CardName", $CardName);
+//             $sqlUpdate1_Result->bindParam(":AllDocTotal", $TotalBuys); 
+//             $sqlUpdate1_Result->bindParam(":ThisYearAllDocTotal", $TotalBuys); 
+//             $sqlUpdate1_Result->bindParam(":CurrentYear", $year);
+//             $sqlUpdate1_Result->bindParam(":Name", $Name);
+//             $sqlUpdate1_Result->execute();
+
+//             echo $n.'Updated--'.'<br>';
+//         } else {
+//             $ThisYearTotalBuyers = $TotalBuys - $Sales;
+
+//             $sqlUpdate2 = "UPDATE `Deliverys` SET `CntctCode`=:CntctCode, `CardName`=:CardName, `AllDocTotal`=:AllDocTotal, `ThisYearAllDocTotal`=:ThisYearAllDocTotal , `CurrentYear`=:CurrentYear WHERE Name = :Name";
+//             $sqlUpdate2_Result = $conn->prepare($sqlUpdate2);
+//             $sqlUpdate2_Result->bindParam(":CntctCode", $CntctCode);
+//             $sqlUpdate2_Result->bindParam(":CardName", $CardName);
+//             $sqlUpdate2_Result->bindParam(":AllDocTotal", $TotalBuys); 
+//             $sqlUpdate2_Result->bindParam(":ThisYearAllDocTotal", $ThisYearTotalBuyers); 
+//             $sqlUpdate2_Result->bindParam(":CurrentYear", $year);
+//             $sqlUpdate2_Result->bindParam(":Name", $Name);
+//             $sqlUpdate2_Result->execute();
+
+//             echo $n.'Updated**'.'<br>';
+//         }
+//     } else {
+//         $sql2 = "INSERT INTO `Deliverys`(`Name`, `CntctCode`, `CardName`, `AllDocTotal`, `ThisYearAllDocTotal`, `CurrentYear`) VALUES (:Name, :CntctCode, :CardName, :AllDocTotal, :ThisYearAllDocTotal, :CurrentYear)";
+//         $insertResult = $conn->prepare($sql2);
+//         $insertResult->bindParam(":Name", $Name);
+//         $insertResult->bindParam(":CntctCode", $CntctCode);
+//         $insertResult->bindParam(":CardName", $CardName);
+//         $insertResult->bindParam(":AllDocTotal", $TotalBuys); 
+//         $insertResult->bindParam(":ThisYearAllDocTotal", $TotalBuys); 
+//         $insertResult->bindParam(":CurrentYear", $year);
+//         $insertResult->execute();
+
+//         echo 'Inserted'.'<br>';
+//     }
+// }
+
 foreach ($sums as $PrimayId => $infos){
     $CntctCode = $infos['CntctCode'];
     $Name = $infos['Name'];
@@ -150,37 +210,9 @@ foreach ($sums as $PrimayId => $infos){
     $checkStmt->execute();
 
     if($checkStmt->rowCount() > 0) {
-        $row = $checkStmt->fetch(PDO::FETCH_ASSOC);
-        $Sales = $row['AllDocTotal'];
-        $existedYear = $row['CurrentYear'];
 
-        if($existedYear == $year){
-            $sqlUpdate1 = "UPDATE `Deliverys` SET `CntctCode`=:CntctCode, `CardName`=:CardName, `AllDocTotal`=:AllDocTotal, `ThisYearAllDocTotal`=:ThisYearAllDocTotal , `CurrentYear`=:CurrentYear WHERE Name = :Name";
-            $sqlUpdate1_Result = $conn->prepare($sqlUpdate1);
-            $sqlUpdate1_Result->bindParam(":CntctCode", $CntctCode);
-            $sqlUpdate1_Result->bindParam(":CardName", $CardName);
-            $sqlUpdate1_Result->bindParam(":AllDocTotal", $TotalBuys); 
-            $sqlUpdate1_Result->bindParam(":ThisYearAllDocTotal", $TotalBuys); 
-            $sqlUpdate1_Result->bindParam(":CurrentYear", $year);
-            $sqlUpdate1_Result->bindParam(":Name", $Name);
-            $sqlUpdate1_Result->execute();
-
-            echo $n.'Updated--'.'<br>';
-        } else {
-            $ThisYearTotalBuyers = $TotalBuys - $Sales;
-
-            $sqlUpdate2 = "UPDATE `Deliverys` SET `CntctCode`=:CntctCode, `CardName`=:CardName, `AllDocTotal`=:AllDocTotal, `ThisYearAllDocTotal`=:ThisYearAllDocTotal , `CurrentYear`=:CurrentYear WHERE Name = :Name";
-            $sqlUpdate2_Result = $conn->prepare($sqlUpdate2);
-            $sqlUpdate2_Result->bindParam(":CntctCode", $CntctCode);
-            $sqlUpdate2_Result->bindParam(":CardName", $CardName);
-            $sqlUpdate2_Result->bindParam(":AllDocTotal", $TotalBuys); 
-            $sqlUpdate2_Result->bindParam(":ThisYearAllDocTotal", $ThisYearTotalBuyers); 
-            $sqlUpdate2_Result->bindParam(":CurrentYear", $year);
-            $sqlUpdate2_Result->bindParam(":Name", $Name);
-            $sqlUpdate2_Result->execute();
-
-            echo $n.'Updated**'.'<br>';
-        }
+        
+        
     } else {
         $sql2 = "INSERT INTO `Deliverys`(`Name`, `CntctCode`, `CardName`, `AllDocTotal`, `ThisYearAllDocTotal`, `CurrentYear`) VALUES (:Name, :CntctCode, :CardName, :AllDocTotal, :ThisYearAllDocTotal, :CurrentYear)";
         $insertResult = $conn->prepare($sql2);
@@ -195,6 +227,8 @@ foreach ($sums as $PrimayId => $infos){
         echo 'Inserted'.'<br>';
     }
 }
+
+
 
 
 ?>

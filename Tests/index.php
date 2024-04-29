@@ -37,6 +37,8 @@ if(empty($data)) {
     exit;
 }
 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -78,6 +80,7 @@ if(empty($data)) {
         <tbody>
             <?php foreach ($data as $item): ?>
                 <tr>
+                    <td><?php echo substr($item['DocDate'] , 0 , 4); ?></td>
                     <td><?php echo $item['CntctCode']; ?></td>
                     <td><?php echo $item['Name']; ?></td>
                     <td><?php echo $item['DocNum']; ?></td>

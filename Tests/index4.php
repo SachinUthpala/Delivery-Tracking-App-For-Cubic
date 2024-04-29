@@ -1,4 +1,8 @@
 <?php
+ // Assuming this file contains your database connection code
+session_start();
+
+$year = date("Y");
 
 // API URL
 $url = "http://10.0.0.237:3000/api/inv";
@@ -15,7 +19,9 @@ $response = curl_exec($ch);
 
 // Check for errors
 if (curl_error($ch)) {
-    echo 'Error: ' . curl_error($ch);
+    echo 'Error: '. curl_error($ch);
+    header("Location: ../index.php");
+    $_SESSION['API_NOT_WORKING'] = 1;
     exit;
 }
 
@@ -37,72 +43,69 @@ if (empty($data)) {
     exit;
 }
 
+// Initialize an empty array to store filtered data
+$filteredData = [];
+
 // Aggregate data by CntctCode and calculate sum of DocTotal
-$sums = [];
 foreach ($data as $item) {
-    $cntctCode = $item['CntctCode'];
-    $name = $item['Name'];
-    $docTotal = $item['DocTotal'];
-    if (!isset($sums[$cntctCode])) {
-        $sums[$cntctCode] = [
-            'Name' => $name,
-            'TotalDocTotal' => 0
-        ];
+    $docDate = $item['DocDate'];
+    $docYear = date('Y', strtotime($docDate));
+    if ($docYear == $year) {
+        $filteredData[] = $item;
     }
-    $sums[$cntctCode]['TotalDocTotal'] += $docTotal;
 }
 
+// Display filtered data in a table
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Doc Totals</title>
+    <title>Filtered Data</title>
     <style>
         table {
             border-collapse: collapse;
             width: 100%;
         }
-
-        th,
-        td {
+        th, td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
-
         th {
             background-color: #f2f2f2;
         }
     </style>
 </head>
-
 <body>
-
-    <h2>User Doc Totals</h2>
-
+    <h2>Filtered Data for <?php echo $year; ?></h2>
     <table>
         <thead>
             <tr>
                 <th>CntctCode</th>
                 <th>Name</th>
-                <th>Total DocTotal</th>
+                <th>DocNum</th>
+                <th>DocDate</th>
+                <th>CANCELED</th>
+                <th>CardName</th>
+                <th>DocTotal</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($sums as $cntctCode => $info): ?>
+            <?php foreach ($filteredData as $item): ?>
                 <tr>
-                    <td><?php echo $cntctCode; ?></td>
-                    <td><?php echo $info['Name']; ?></td>
-                    <td><?php echo $info['TotalDocTotal']; ?></td>
+                    <td><?php echo $item['CntctCode']; ?></td>
+                    <td><?php echo $item['Name']; ?></td>
+                    <td><?php echo $item['DocNum']; ?></td>
+                    <td><?php echo $item['DocDate']; ?></td>
+                    <td><?php echo $item['CANCELED']; ?></td>
+                    <td><?php echo $item['CardName']; ?></td>
+                    <td><?php echo $item['DocTotal']; ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-
 </body>
-
 </html>
