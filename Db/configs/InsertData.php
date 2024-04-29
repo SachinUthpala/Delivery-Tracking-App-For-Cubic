@@ -228,6 +228,7 @@ foreach ($sums as $PrimayId => $infos){
     }
 }
 
+header("Location: ./CurrentYearInsert.php");
 
 
 
