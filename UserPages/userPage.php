@@ -385,20 +385,7 @@ $currentYearSql = "SELECT * FROM CurrentYearDelivery";
             });
         }
         
-            Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to Delete User!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-            if (result.isConfirmed) {
-                location.href = `../Db/configs/config.user.php`
-            }
-            });
-        }
+           
     </script>
 
 
