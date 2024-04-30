@@ -1,5 +1,6 @@
 <?php
 require_once '../Db/Db.conn.php';
+// require '../Db/configs/config.user.php';
 session_start();
 
 // API URL
@@ -78,7 +79,10 @@ foreach ($sums as $PrimayId => $infos){
 
 $totalPoints = $totalSales / 100000;
 
-
+// sql quires
+$SelectSql = "SELECT * FROM `Users`";
+$SelectSql_smtp = $conn->prepare($SelectSql);
+$SelectSql_smtp->execute();
 
 
 ?>
@@ -123,13 +127,13 @@ $totalPoints = $totalSales / 100000;
                     </span>
                     <h3>Start Day</h3>
                 </a>
-                <a href="#" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?> >
+                <a href="#" onclick="DisplayDash()" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?> >
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="#" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
+                <a href="#" onclick="DisplayUser()" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
                     <span class="material-icons-sharp">
                         person_outline
                     </span>
@@ -250,31 +254,40 @@ $totalPoints = $totalSales / 100000;
 
             <!-- Recent Orders Table -->
             <div class="recent-orders">
-                <h2>Top Buyers</h2>
+                <h2>System Users</h2>
                 <table>
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Name</th>
-                            <th>Company</th>
-                            <th>Total Invoice</th>
-                            <th>Total Points</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Admin Access</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($sums as $PrimayId => $info): ?>
-                            <?php if ($info['TotalDocTotal'] >= 8000000): ?>
-                                <tr>
-                                    <td><?php $num = $num +1 ; 
-                                    echo $num; ?></td>
-                                    <td><?php echo $info['Name']; ?></td>
-                                    <td><?php echo $info['CardName']; ?></td>
-                                    <td><?php echo "Rs .".number_format($info['TotalDocTotal'], 2, '.', ','); ?></td>
-                                    <td><?php $userPoints = $info['TotalDocTotal'] / 100000;
-                                    echo number_format($userPoints, 2, '.', ','); ?></td>
-                                </tr>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
+                    <?php while($SelectSql_smtp_row = $SelectSql_smtp->fetch(PDO::FETCH_ASSOC)){ ?>
+                        <tr>
+                            <td><?php echo $SelectSql_smtp_row['userId']; ?></td>
+                            <td><?php echo $SelectSql_smtp_row['userName']; ?></td>
+                            <td><?php echo $SelectSql_smtp_row['userEmail']; ?></td>
+                            <td><?php echo $SelectSql_smtp_row['userPassword']; ?></td>
+                            <td><?php 
+                                if($SelectSql_smtp_row['userAccess'] == 1){
+                                    ?> <span style="padding:3px 6px;border:1px solid #f58634 ;background: #f58634 ;color:aliceblue;border-radius: 5px;">Have</span> <?php
+                                }else{
+                                    ?> <span style="padding:3px 6px;border:1px solid #FF0060 ;background: #FF0060 ;color:aliceblue;border-radius: 5px;">Dont Have</span> <?php
+                                }
+                            ?></td>
+                            <td>
+                                <form action="#" method="post">
+                                    <input type="hidden" name="id" value="<?php echo $SelectSql_smtp_row['userId'];  ?>">
+                                    <input type="submit" name="Delete_user" value="Delete User" style="padding:4px 6px;border:1px solid #FF0060 ;background: #FF0060 ;color:aliceblue;border-radius: 5px;">
+                                </form>
+                            </td>
+                        </tr>
+                    <?php } ?>
                     </tbody>
 
                 </table>
@@ -321,7 +334,7 @@ $totalPoints = $totalSales / 100000;
 
         function DisplayUser(){
             document.getElementById('userContainer').style.display = 'block';
-            document.getElementById('dashbordContainer').style.display = 'block';
+            document.getElementById('dashbordContainer').style.display = 'none';
         }
     </script>
 </body>

@@ -551,3 +551,11 @@ main .recent-orders a{
     }
 
 }
+
+#dashbordContainer{
+    display: block;
+}
+
+#userContainer{
+    display: none;
+}
