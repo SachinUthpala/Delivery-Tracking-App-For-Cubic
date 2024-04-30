@@ -171,7 +171,9 @@ $SelectSql_smtp->execute();
         <!-- End of Sidebar Section -->
 
         <!-- Main Content -->
-        <main id="dashbordContainer">
+        <main id="dashbordContainer" <?php if($_SESSION['addUser'] == 1){
+            echo "style='display:none;'";
+        } ?>>
             <h1>Dashboard</h1>
             <!-- Analyses -->
             <div class="analyse">
@@ -244,12 +246,49 @@ $SelectSql_smtp->execute();
         <!-- End of Main Content -->
 
         <!-- start user container -->
-        <main id="userContainer">
+        <main id="userContainer" <?php if($_SESSION['addUser'] == 1){
+            echo "style='display:block;'";
+        } ?>>
             <h1>User Analisis</h1>
             <!-- Analyses -->
             
             <!-- End of Analyses -->
+            <form action="../Db/configs/config.user.php" method="post" class="userForm">
+                    <div class="form first">
+                        <div class="details personal">
+                            <span class="title">Add User</span>
+                            <br><br>
+                            <div class="feilds">
+                                <div class="input-feilds">
+                                    <label>Name</label>
+                                    <input type="text" name="username" id="#" >
+                                </div>
+                                <div class="input-feilds">
+                                    <label>Email</label>
+                                    <input type="email" name="email" id="#" >
+                                </div>
+                                <div class="input-feilds">
+                                    <label>Password</label>
+                                    <input type="text" name="password" id="#">
+                                </div>
+                                <div class="input-feilds">
+                                    <label>Admin Access</label>
+                                    <select name="admin_access">
+                                        <option value="0">No</option>
+                                        <option value="1">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="btns">
+                                <button type="submit" class="nxtBtn submits" name="submits">
+                                    <span class="btnText" ></span>Create User</span>
+                                </button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
             
 
             <!-- Recent Orders Table -->
@@ -281,7 +320,7 @@ $SelectSql_smtp->execute();
                                 }
                             ?></td>
                             <td>
-                                <form action="#" method="post">
+                                <form action="../Db/configs/config.user.php" method="post">
                                     <input type="hidden" name="id" value="<?php echo $SelectSql_smtp_row['userId'];  ?>">
                                     <input type="submit" name="Delete_user" value="Delete User" style="padding:4px 6px;border:1px solid #FF0060 ;background: #FF0060 ;color:aliceblue;border-radius: 5px;">
                                 </form>
@@ -305,13 +344,32 @@ $SelectSql_smtp->execute();
     <script src="index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- sweet alert php -->
+    <?php
+    
+    if($_SESSION['addUser'] == 1 ){
+        echo '
+        <script>
+        Swal.fire({
+            title: "User Add !",
+            text: "You are sucessfully Add user!",
+            icon: "success"
+          });
+          </script>
+        '
+        ; // Set the flag to true
+        $_SESSION['addUser'] = null; // Reset the session variable
+        
+    }
+    
+    ?>
 
 
     <script>
         function logOut(){
             Swal.fire({
             title: "Are you sure?",
-            text: "Do you want to lpgout now!",
+            text: "Do you want to logout now!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -320,6 +378,21 @@ $SelectSql_smtp->execute();
             }).then((result) => {
             if (result.isConfirmed) {
                 location.href = "../Db/configs/logOut.php"
+            }
+            });
+        }
+        
+            Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to Delete User!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = `../Db/configs/config.user.php`
             }
             });
         }
