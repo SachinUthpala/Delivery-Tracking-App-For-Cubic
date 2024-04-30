@@ -84,6 +84,9 @@ $SelectSql = "SELECT * FROM `Users`";
 $SelectSql_smtp = $conn->prepare($SelectSql);
 $SelectSql_smtp->execute();
 
+//select current year data
+$currentYearSql = "SELECT * FROM CurrentYearDelivery";
+
 
 ?>
 <!DOCTYPE html>
