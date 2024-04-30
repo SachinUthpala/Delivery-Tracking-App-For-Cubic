@@ -227,7 +227,7 @@ foreach ($sums as $PrimayId => $infos){
         echo 'Inserted'.'<br>';
     }
 }
-
+$_SESSION['DayStart'] = 1;
 header("Location: ./CurrentYearInsert.php");
 
 

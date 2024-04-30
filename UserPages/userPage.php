@@ -97,6 +97,7 @@ $totalPoints = $totalSales / 100000;
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -106,7 +107,7 @@ $totalPoints = $totalSales / 100000;
         <aside>
             <div class="toggle">
                 <div class="logo">
-                    <h2>Cubik<span class="danger"> Lanka</span></h2>
+                    <h2>Cubik<span class="danger" style="color: #f58634;"> Lanka</span></h2>
                 </div>
                 <div class="close" id="close-btn">
                     <span class="material-icons-sharp">
@@ -115,32 +116,32 @@ $totalPoints = $totalSales / 100000;
                 </div>
             </div>
 
-            <div class="sidebar">
-                <a href="../Db/configs/InsertData.php">
+            <div class="sidebar" >
+                <a href="../Db/configs/InsertData.php" style="color: #f58634;">
                     <span class="material-icons-sharp">
                         not_started
                     </span>
                     <h3>Start Day</h3>
                 </a>
-                <a href="#">
+                <a href="#" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?> >
                     <span class="material-icons-sharp">
                         dashboard
                     </span>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="#">
+                <a href="#" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
                     <span class="material-icons-sharp">
                         person_outline
                     </span>
                     <h3>Users</h3>
                 </a>
-                <a href="#">
+                <a href="#" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
                     <span class="material-icons-sharp">
                         insights
                     </span>
                     <h3>Analytics</h3>
                 </a>
-                <a href="#">
+                <a href="#" style="color: #f58634;">
                     <div class="nav">
                         <button id="menu-btn">
                             
@@ -155,7 +156,7 @@ $totalPoints = $totalSales / 100000;
                         </div>
                     </div>
                 </a>
-                <a href="#">
+                <a href="#" onclick="logOut()" style="color: #FF0060;">
                     <span class="material-icons-sharp">
                         logout
                     </span>
@@ -166,7 +167,7 @@ $totalPoints = $totalSales / 100000;
         <!-- End of Sidebar Section -->
 
         <!-- Main Content -->
-        <main>
+        <main id="dashbordContainer">
             <h1>Dashboard</h1>
             <!-- Analyses -->
             <div class="analyse">
@@ -238,12 +239,91 @@ $totalPoints = $totalSales / 100000;
         </main>
         <!-- End of Main Content -->
 
+        <!-- start user container -->
+        <main id="userContainer">
+            <h1>User Analisis</h1>
+            <!-- Analyses -->
+            
+            <!-- End of Analyses -->
+
+            
+
+            <!-- Recent Orders Table -->
+            <div class="recent-orders">
+                <h2>Top Buyers</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Total Invoice</th>
+                            <th>Total Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($sums as $PrimayId => $info): ?>
+                            <?php if ($info['TotalDocTotal'] >= 8000000): ?>
+                                <tr>
+                                    <td><?php $num = $num +1 ; 
+                                    echo $num; ?></td>
+                                    <td><?php echo $info['Name']; ?></td>
+                                    <td><?php echo $info['CardName']; ?></td>
+                                    <td><?php echo "Rs .".number_format($info['TotalDocTotal'], 2, '.', ','); ?></td>
+                                    <td><?php $userPoints = $info['TotalDocTotal'] / 100000;
+                                    echo number_format($userPoints, 2, '.', ','); ?></td>
+                                </tr>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+
+                </table>
+            </div>
+            <!-- End of Recent Orders -->
+
+        </main>
+        <!--end -- user Container-->
+
       
 
     </div>
 
     <script src="orders.js"></script>
     <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+    <script>
+        function logOut(){
+            Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to lpgout now!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = "../Db/configs/logOut.php"
+            }
+            });
+        }
+    </script>
+
+
+    <script>
+        function DisplayDash(){
+            document.getElementById('dashbordContainer').style.display = 'block';
+            document.getElementById('userContainer').style.display = 'none';
+        }
+
+        function DisplayUser(){
+            document.getElementById('userContainer').style.display = 'block';
+            document.getElementById('dashbordContainer').style.display = 'block';
+        }
+    </script>
 </body>
 
 </html>
