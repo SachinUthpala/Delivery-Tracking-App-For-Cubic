@@ -29,4 +29,17 @@ if(isset($_POST['submits'])){
     }
 }
 
+if(isset($_POST['Delete_user'])){
+    $id = $_POST['id'];
+
+    $deleteUser = "DELETE FROM `Users` WHERE userId = :id";
+    $deleteUserResult = $conn->prepare($deleteUser);
+    $deleteUserResult->bindParam(":id" , $id);
+    $deleteUserResult->execute();
+
+        echo "User added";
+        $_SESSION['addUser'] = 1;
+        header("Location: ../../UserPages/userPage.php");
+}
+
 ?>

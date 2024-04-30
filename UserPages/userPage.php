@@ -351,8 +351,8 @@ $SelectSql_smtp->execute();
         echo '
         <script>
         Swal.fire({
-            title: "User Add !",
-            text: "You are sucessfully Add user!",
+            title: "User Operation Successfull !",
+            text: "Success!",
             icon: "success"
           });
           </script>
