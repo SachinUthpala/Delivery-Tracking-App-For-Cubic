@@ -226,8 +226,8 @@ $currentSmtp->execute();
                 <div class="sales">
                     <div class="status">
                         <div class="info">
-                            <h3>Total Sales</h3>
-                            <h1 style="padding-left:10px"><?php echo "Rs.".number_format($totalSales, 2, '.', ','); ?></h1>
+                            <h3>Total Sales <?php echo '20'.$currentYear; ?></h3>
+                            <h1 style="padding-left:10px"><?php echo "Rs.".number_format($sales, 2, '.', ','); ?></h1>
                         </div>
                         
                     </div>
@@ -235,8 +235,8 @@ $currentSmtp->execute();
                 <div class="visits">
                     <div class="status">
                         <div class="info">
-                            <h3>Total Customrs</h3>
-                            <h1 style="padding-left:10px"><?php echo $totalUsers; ?></h1>
+                            <h3>Total Active Customrs <?php echo '20'.$currentYear; ?></h3>
+                            <h1 style="padding-left:10px"><?php echo $n; ?></h1>
                         </div>
                         
                     </div>
@@ -244,8 +244,8 @@ $currentSmtp->execute();
                 <div class="searches">
                     <div class="status">
                         <div class="info">
-                            <h3>Total Points</h3>
-                            <h1 style="padding-left:10px"><?php echo number_format($totalPoints, 2, '.', ','); ?></h1>
+                            <h3>Total Points <?php echo '20'.$currentYear; ?></h3>
+                            <h1 style="padding-left:10px"><?php echo number_format($points, 2, '.', ','); ?></h1>
                         </div>
                         
                     </div>
@@ -410,6 +410,7 @@ $currentSmtp->execute();
                     <th>Used Points</th>
                     <th>Remaining Points</th>
                     <th>Use Point</th>
+                    <th>Total Point</th>
                 </tr>
             </thead>
         <!-- Table body -->
@@ -428,6 +429,7 @@ $currentSmtp->execute();
                         <form action="../Db/configs/updatePoints.php" method="post" style="display: flex;align-items: center;gap: 5px;">
                             <input type="hidden" name="id" value="<?php echo $currentSmtp_row['Name']; ?>">
                             <input type="hidden" name="currentPoints" value="<?php echo $crruntPoints  ; ?>">
+                            <input type="hidden" name="alredyUse" value="<?php echo $currentSmtp_row['UsedPoints']; ?>">
                             <input type="number" max="<?php echo $currentPoints; ?>" name="used_point" id="usedPoint" style="padding: 3px 2px;color: #000000;background-color:  rgba(113, 135, 253, 0.37);border-radius: 5px;">
                             <input type="submit" name="used_point_submit" id="submit" style="padding: 3px 5px;color: #fff;background-color:  rgba(0, 231, 36, 0.96);border-radius: 5px;">
                         </form>
