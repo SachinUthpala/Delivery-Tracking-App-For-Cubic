@@ -93,6 +93,17 @@ $currentYearSql = "SELECT * FROM CurrentYearDelivery";
 $currentSmtp = $conn->prepare($currentYearSql);
 $currentSmtp->execute();
 
+while($all_deliveries2_row = $currentSmtp->fetch(PDO::FETCH_ASSOC)){
+    $n = $n + 1;
+    $sales = $sales + $all_deliveries2_row['AllDocTotal'];
+    $points = $points + $all_deliveries2_row['RemainingPoints']; 
+ }
+
+//select current year data
+$currentYearSql_new = "SELECT * FROM CurrentYearDelivery";
+$currentSmtp_2 = $conn->prepare($currentYearSql_new);
+$currentSmtp_2->execute();
+
 
 
 ?>
@@ -108,9 +119,8 @@ $currentSmtp->execute();
 
 
     <!--for sweet alert-->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" ></script>
+	<script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
 
     <!-- symble url -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -217,7 +227,7 @@ $currentSmtp->execute();
                     <div class="status">
                         <div class="info">
                             <h3>Total Points</h3>
-                            <h1 style="padding-left:10px"><?php echo number_format($totalPoints, 2, '.', ','); ?></h1>
+                            <h1 style="padding-left:10px"><?php echo number_format($points, 2, '.', ','); ?></h1>
                         </div>
                         
                     </div>
@@ -415,21 +425,22 @@ $currentSmtp->execute();
             </thead>
         <!-- Table body -->
         <tbody>
-            <?php while($currentSmtp_row = $currentSmtp->fetch(PDO::FETCH_ASSOC)): ?>
+            <?php while($currentSmtp_row_2 = $currentSmtp_2->fetch(PDO::FETCH_ASSOC)): ?>
                 <tr>
-                    <td><?php echo $currentSmtp_row['CntctCode']; ?></td>
-                    <td><?php echo $currentSmtp_row['Name']; ?></td>
-                    <td><?php echo $currentSmtp_row['CardName']; ?></td>
-                    <td><?php echo $currentSmtp_row['AllDocTotal']; ?></td>
-                    <td><?php echo $currentSmtp_row['UsedPoints']; ?></td>
-                    <td><?php $crruntPoints = $currentSmtp_row['RemainingPoints'] - $currentSmtp_row['UsedPoints'] ; echo $crruntPoints ; ?></td>
-                    <td style="<?php if($currentSmtp_row['RemainingPoints'] <= 0) {
+                    <td><?php echo $currentSmtp_row_2['CntctCode']; ?></td>
+                    <td><?php echo $currentSmtp_row_2['Name']; ?></td>
+                    <td><?php echo $currentSmtp_row_2['CardName']; ?></td>
+                    <td><?php echo $currentSmtp_row_2['AllDocTotal']; ?></td>
+                    <td><?php echo $currentSmtp_row_2['UsedPoints']; ?></td>
+                    <td><?php $crruntPoints = $currentSmtp_row_2['RemainingPoints'] - $currentSmtp_row_2['UsedPoints'] ; echo $crruntPoints ; ?></td>
+                    <td><?php echo $crruntPoints + $currentSmtp_row_2['UsedPoints']; ?></td>
+                    <td style="<?php if($currentSmtp_row_2['RemainingPoints'] <= 0) {
                         echo "display:none;";
                     } ?>">
                         <form action="../Db/configs/updatePoints.php" method="post" style="display: flex;align-items: center;gap: 5px;">
-                            <input type="hidden" name="id" value="<?php echo $currentSmtp_row['Name']; ?>">
+                            <input type="hidden" name="id" value="<?php echo $currentSmtp_row_2['Name']; ?>">
                             <input type="hidden" name="currentPoints" value="<?php echo $crruntPoints  ; ?>">
-                            <input type="hidden" name="alredyUse" value="<?php echo $currentSmtp_row['UsedPoints']; ?>">
+                            <input type="hidden" name="alredyUse" value="<?php echo $currentSmtp_row_2['UsedPoints']; ?>">
                             <input type="number" max="<?php echo $currentPoints; ?>" name="used_point" id="usedPoint" style="padding: 3px 2px;color: #000000;background-color:  rgba(113, 135, 253, 0.37);border-radius: 5px;">
                             <input type="submit" name="used_point_submit" id="submit" style="padding: 3px 5px;color: #fff;background-color:  rgba(0, 231, 36, 0.96);border-radius: 5px;">
                         </form>
