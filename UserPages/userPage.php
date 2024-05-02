@@ -394,42 +394,87 @@ $currentSmtp->execute();
 
             <!-- Recent Orders Table -->
             <div class="recent-orders">
-                <h2><?php echo $currentYear.' - '; ?>Deliveries</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Contact Code</th>
-                            <th>Name</th>
-                            <th>Companhy</th>
-                            <th>Total Document</th>
-                            <th>Used Points</th>
-                            <th>Remaining Points</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php while($currentSmtp_row = $currentSmtp->fetch(PDO::FETCH_ASSOC)){ ?>
-                        <tr>
-                            <td><?php echo $currentSmtp_row['CntctCode']; ?></td>
-                            <td><?php echo $currentSmtp_row['Name']; ?></td>
-                            <td><?php echo $currentSmtp_row['CardName']; ?></td>
-                            <td><?php echo $currentSmtp_row['AllDocTotal']; ?></td>
-                            <td><?php echo $currentSmtp_row['UsedPoints']; ?></td>
-                            <td><?php echo $currentSmtp_row['RemainingPoints']; ?></td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
+                <h2><?php echo '20'.$currentYear.' - '; ?>Deliveries</h2>
+                <!-- Add a search input field -->
+        <input type="text" id="searchInput" placeholder="Search..." style="padding: 5px 10px; background : rgba(113, 135, 253, 0.37);color: #000000;font-size: large;border-radius: 5px;">
+        <div class="recent-orders">
 
-                </table>
+        <table id="deliveryTable">
+            <!-- Table header -->
+            <thead>
+                <tr>
+                    <th>Contact Code</th>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Total Document</th>
+                    <th>Used Points</th>
+                    <th>Remaining Points</th>
+                    <th>Use Point</th>
+                </tr>
+            </thead>
+        <!-- Table body -->
+        <tbody>
+            <?php while($currentSmtp_row = $currentSmtp->fetch(PDO::FETCH_ASSOC)): ?>
+                <tr>
+                    <td><?php echo $currentSmtp_row['CntctCode']; ?></td>
+                    <td><?php echo $currentSmtp_row['Name']; ?></td>
+                    <td><?php echo $currentSmtp_row['CardName']; ?></td>
+                    <td><?php echo $currentSmtp_row['AllDocTotal']; ?></td>
+                    <td><?php echo $currentSmtp_row['UsedPoints']; ?></td>
+                    <td><?php echo $currentSmtp_row['RemainingPoints']; ?></td>
+                    <td style="<?php if($currentSmtp_row['RemainingPoints'] <= 0) {
+                        echo "display:none;";
+                    } ?>">
+                        <form action="#" method="post" style="display: flex;align-items: center;gap: 5px;">
+                            <input type="number" name="used_point" id="usedPoint" value="<?php echo $currentSmtp_row['RemainingPoints']; ?>" style="padding: 3px 2px;color: #000000;background-color:  rgba(113, 135, 253, 0.37);border-radius: 5px;">
+                            <input type="submit" name="used_point_submit" id="submit" style="padding: 3px 5px;color: #fff;background-color:  rgba(0, 231, 36, 0.96);border-radius: 5px;">
+                        </form>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Add event listener to the search input field
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchQuery = this.value.toLowerCase();
+        const tableRows = document.querySelectorAll('#deliveryTable tbody tr');
+
+        // Iterate through each row of the table
+        tableRows.forEach(row => {
+            let found = false;
+            // Iterate through each cell of the row
+            row.querySelectorAll('td').forEach(cell => {
+                const cellText = cell.textContent.toLowerCase();
+                // Check if the cell text contains the search query
+                if (cellText.includes(searchQuery)) {
+                    found = true;
+                }
+            });
+            // Show or hide the row based on search results
+            if (found) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+                
             </div>
-            <!-- End of Recent Orders -->
+
+            
+               
 
         </main>
       
 
     </div>
 
-    <script src="orders.js"></script>
-    <script src="index.js"></script>
+
     <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 
     <!-- sweet alert php -->
