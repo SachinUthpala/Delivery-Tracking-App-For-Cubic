@@ -699,3 +699,7 @@ main .recent-orders a{
 #userContainer{
     display: none;
 }
+
+#currentYearSales{
+    display: none;
+}

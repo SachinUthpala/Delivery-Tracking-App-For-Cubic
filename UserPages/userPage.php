@@ -117,7 +117,6 @@ $currentSmtp_2->execute();
     <link rel="stylesheet" href="style.css">
     <title>Cubik | Sri Lanka</title>
 
-
     <!--for sweet alert-->
 	<script src="sweetalert2.min.js"></script>
     <link rel="stylesheet" href="sweetalert2.min.css">
@@ -449,6 +448,12 @@ $currentSmtp_2->execute();
             <?php endwhile; ?>
         </tbody>
     </table>
+
+    <div class="pagination">
+    <button id="prevPage">Previous</button>
+    <span id="currentPage"></span>
+    <button id="nextPage">Next</button>
+</div>
 </div>
 
 <script>
@@ -475,6 +480,47 @@ $currentSmtp_2->execute();
                 row.style.display = 'none';
             }
         });
+    });
+
+
+
+
+    const table = document.getElementById('deliveryTable');
+    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    const rowsPerPage = 10;
+    let currentPage = 1;
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    // Function to show rows for the current page
+    function showRowsForPage(page) {
+        const startIndex = (page - 1) * rowsPerPage;
+        const endIndex = Math.min(startIndex + rowsPerPage, rows.length);
+        for (let i = 0; i < rows.length; i++) {
+            if (i >= startIndex && i < endIndex) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+        document.getElementById('currentPage').textContent = `Page ${currentPage} of ${totalPages}`;
+    }
+
+    // Initial display
+    showRowsForPage(currentPage);
+
+    // Pagination event listeners
+    document.getElementById('prevPage').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            showRowsForPage(currentPage);
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            showRowsForPage(currentPage);
+        }
     });
 </script>
 
@@ -586,6 +632,8 @@ $currentSmtp_2->execute();
             document.getElementById('userContainer').style.display = 'none';
         }
     </script>
+
+    <script src="./index.js"></script>
 </body>
 
 </html>
