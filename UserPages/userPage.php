@@ -120,7 +120,7 @@ $currentSmtp_2->execute();
     <!--for sweet alert-->
 	<script src="sweetalert2.min.js"></script>
     <link rel="stylesheet" href="sweetalert2.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- symble url -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
