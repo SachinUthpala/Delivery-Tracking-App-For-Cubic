@@ -1,6 +1,5 @@
 <?php
 
-
 require_once '../Db.conn.php';
 session_start();
 
@@ -11,17 +10,21 @@ if(isset($_POST['used_point_submit'])){
     $currentPoints = $_POST['currentPoints'];
     $points = $_POST['used_point'];
 
-    $sql = "INSERT INTO CurrentYearDelivery (`UsedPoints`) VALUES ( :UsedPoints) WHERE Name = :name";
-    $smtp = $conn -> prepare($sql);
-    $smtp->bindParam(":UsedPoints" , $points );
-    $smtp->bindParam(":Name" , $id );
+    // Use UPDATE statement to update existing row
+    $sql = "UPDATE CurrentYearDelivery SET UsedPoints = :UsedPoints WHERE Name = :Name";
+    $smtp = $conn->prepare($sql);
+    $smtp->bindParam(":UsedPoints", $points);
+    $smtp->bindParam(":Name", $id);
     $smtp->execute();
 
-    if ($stmt->rowCount() > 0) {
+    // Check if the update was successful
+    if ($smtp->rowCount() > 0) {
         $_SESSION['updatePpoint'] = 1;
         header("Location: ../UserPages/UserPage.php");
+        exit(); // Always exit after redirecting
+    } else {
+        echo "Error updating points";
     }
 }
-
 
 ?>
