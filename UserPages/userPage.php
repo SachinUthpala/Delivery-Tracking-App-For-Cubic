@@ -111,6 +111,9 @@ $currentSmtp->execute();
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" ></script>
+
+    <!-- symble url -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
 <body>
@@ -155,9 +158,9 @@ $currentSmtp->execute();
                     <h3>Analytics</h3>
                 </a>
                 <a href="#" onclick="displaycurrentYearSales()" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
-                    <span class="material-icons-sharp">
-                        insights
-                    </span>
+                <span class="material-symbols-outlined">
+                    local_shipping
+                </span>
                     <h3>All Deliveries</h3>
                 </a>
                 <a href="#" style="color: #f58634;">
@@ -386,79 +389,32 @@ $currentSmtp->execute();
             <h1>User Analisis</h1>
             <!-- Analyses -->
             
-            <!-- End of Analyses -->
-            <form action="../Db/configs/config.user.php" method="post" class="userForm">
-                    <div class="form first">
-                        <div class="details personal">
-                            <span class="title">Add User</span>
-                            <br><br>
-                            <div class="feilds">
-                                <div class="input-feilds">
-                                    <label>Name</label>
-                                    <input type="text" name="username" id="#" >
-                                </div>
-                                <div class="input-feilds">
-                                    <label>Email</label>
-                                    <input type="email" name="email" id="#" >
-                                </div>
-                                <div class="input-feilds">
-                                    <label>Password</label>
-                                    <input type="text" name="password" id="#">
-                                </div>
-                                <div class="input-feilds">
-                                    <label>Admin Access</label>
-                                    <select name="admin_access">
-                                        <option value="0">No</option>
-                                        <option value="1">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="btns">
-                                <button type="submit" class="nxtBtn submits" name="submits">
-                                    <span class="btnText" ></span>Create User</span>
-                                </button>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </form>
+            
             
 
             <!-- Recent Orders Table -->
             <div class="recent-orders">
-                <h2>System Users</h2>
+                <h2><?php echo $currentYear.' - '; ?>Deliveries</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Password</th>
-                            <th>Admin Access</th>
-                            <th>Delete</th>
+                            <th>Contact Code</th>
+                            <th>Name</th>
+                            <th>Companhy</th>
+                            <th>Total Document</th>
+                            <th>Used Points</th>
+                            <th>Remaining Points</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php while($SelectSql_smtp_row = $SelectSql_smtp->fetch(PDO::FETCH_ASSOC)){ ?>
+                    <?php while($currentSmtp_row = $currentSmtp->fetch(PDO::FETCH_ASSOC)){ ?>
                         <tr>
-                            <td><?php echo $SelectSql_smtp_row['userId']; ?></td>
-                            <td><?php echo $SelectSql_smtp_row['userName']; ?></td>
-                            <td><?php echo $SelectSql_smtp_row['userEmail']; ?></td>
-                            <td><?php echo $SelectSql_smtp_row['userPassword']; ?></td>
-                            <td><?php 
-                                if($SelectSql_smtp_row['userAccess'] == 1){
-                                    ?> <span style="padding:3px 6px;border:1px solid #f58634 ;background: #f58634 ;color:aliceblue;border-radius: 5px;">Have</span> <?php
-                                }else{
-                                    ?> <span style="padding:3px 6px;border:1px solid #FF0060 ;background: #FF0060 ;color:aliceblue;border-radius: 5px;">Dont Have</span> <?php
-                                }
-                            ?></td>
-                            <td>
-                                <form action="../Db/configs/config.user.php" method="post">
-                                    <input type="hidden" name="id" value="<?php echo $SelectSql_smtp_row['userId'];  ?>">
-                                    <input type="submit" name="Delete_user" value="Delete User" style="padding:4px 6px;border:1px solid #FF0060 ;background: #FF0060 ;color:aliceblue;border-radius: 5px;">
-                                </form>
-                            </td>
+                            <td><?php echo $currentSmtp_row['CntctCode']; ?></td>
+                            <td><?php echo $currentSmtp_row['Name']; ?></td>
+                            <td><?php echo $currentSmtp_row['CardName']; ?></td>
+                            <td><?php echo $currentSmtp_row['AllDocTotal']; ?></td>
+                            <td><?php echo $currentSmtp_row['UsedPoints']; ?></td>
+                            <td><?php echo $currentSmtp_row['RemainingPoints']; ?></td>
                         </tr>
                     <?php } ?>
                     </tbody>
