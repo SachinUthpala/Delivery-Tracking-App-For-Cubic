@@ -78,9 +78,11 @@ foreach ($totals as $name => $info) {
     $checkStmt->execute();
 
     if($checkStmt->rowCount() > 0) {
-        $updateSql = "UPDATE `CurrentYearDelivery` SET `AllDocTotal`=:AllDocTotal WHERE Name = :name";
+        $RemainingPoints = number_format(($info['total'] / 100000) , 2 , '.');
+        $updateSql = "UPDATE `CurrentYearDelivery` SET `AllDocTotal`=:AllDocTotal , `RemainingPoints` = :RemainingPoints WHERE Name = :name";
         $updateResult = $conn->prepare($updateSql);
         $updateResult -> bindParam(":AllDocTotal" , $info['total']);
+        $updateResult -> bindParam(":RemainingPoints" , $RemainingPoints);
         $updateResult -> bindParam(":name" , $name);
         $updateResult->execute();
 

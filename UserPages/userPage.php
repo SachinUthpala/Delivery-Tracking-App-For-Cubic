@@ -421,12 +421,14 @@ $currentSmtp->execute();
                     <td><?php echo $currentSmtp_row['CardName']; ?></td>
                     <td><?php echo $currentSmtp_row['AllDocTotal']; ?></td>
                     <td><?php echo $currentSmtp_row['UsedPoints']; ?></td>
-                    <td><?php echo $currentSmtp_row['RemainingPoints']; ?></td>
+                    <td><?php $crruntPoints = $currentSmtp_row['RemainingPoints'] - $currentSmtp_row['UsedPoints'] ; echo $crruntPoints ; ?></td>
                     <td style="<?php if($currentSmtp_row['RemainingPoints'] <= 0) {
                         echo "display:none;";
                     } ?>">
-                        <form action="#" method="post" style="display: flex;align-items: center;gap: 5px;">
-                            <input type="number" name="used_point" id="usedPoint" value="<?php echo $currentSmtp_row['RemainingPoints']; ?>" style="padding: 3px 2px;color: #000000;background-color:  rgba(113, 135, 253, 0.37);border-radius: 5px;">
+                        <form action="../Db/configs/updatePoints.php" method="post" style="display: flex;align-items: center;gap: 5px;">
+                            <input type="hidden" name="id" value="<?php echo $currentSmtp_row['Name']; ?>">
+                            <input type="hidden" name="currentPoints" value="<?php echo $crruntPoints  ; ?>">
+                            <input type="number" max="<?php echo $currentPoints; ?>" name="used_point" id="usedPoint" style="padding: 3px 2px;color: #000000;background-color:  rgba(113, 135, 253, 0.37);border-radius: 5px;">
                             <input type="submit" name="used_point_submit" id="submit" style="padding: 3px 5px;color: #fff;background-color:  rgba(0, 231, 36, 0.96);border-radius: 5px;">
                         </form>
                     </td>
