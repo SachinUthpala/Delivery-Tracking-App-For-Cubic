@@ -191,7 +191,7 @@ $currentSmtp->execute();
         <!-- Main Content -->
         <main id="dashbordContainer" <?php if($_SESSION['addUser'] == 1){
             echo "style='display:none;'";
-        } ?>>
+        } else if($_SESSION['updatePpoint'] == 1) { echo "style='display:none;'"; } ?>>
             <h1>Dashboard</h1>
             <!-- Analyses -->
             <div class="analyse">
@@ -385,7 +385,7 @@ $currentSmtp->execute();
         
 
         <!-- current year sales -->
-        <main id="currentYearSales" >
+        <main id="currentYearSales" <?php if($_SESSION['updatePpoint'] == 1) { echo "style='display:block;'"; } ?>>
             <h1>User Analisis</h1>
             <!-- Analyses -->
             
@@ -494,6 +494,21 @@ $currentSmtp->execute();
         '
         ; // Set the flag to true
         $_SESSION['addUser'] = null; // Reset the session variable
+        
+    }
+
+    if($_SESSION['updatePpoint'] == 1 ){
+        echo '
+        <script>
+        Swal.fire({
+            title: "User Operation Successfull !",
+            text: "Success!",
+            icon: "success"
+          });
+          </script>
+        '
+        ; // Set the flag to true
+        $_SESSION['updatePpoint'] = null; // Reset the session variable
         
     }
     

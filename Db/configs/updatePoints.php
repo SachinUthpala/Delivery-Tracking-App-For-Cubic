@@ -15,7 +15,12 @@ if(isset($_POST['used_point_submit'])){
     $smtp = $conn -> prepare($sql);
     $smtp->bindParam(":UsedPoints" , $points );
     $smtp->bindParam(":Name" , $id );
-    
+    $smtp->execute();
+
+    if ($stmt->rowCount() > 0) {
+        $_SESSION['updatePpoint'] = 1;
+        header("Location: ../UserPages/UserPage.php");
+    }
 }
 
 
