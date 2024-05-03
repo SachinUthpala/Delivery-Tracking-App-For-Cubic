@@ -158,7 +158,7 @@ $currentSmtp_2->execute();
                     </span>
                     <h3>Users</h3>
                 </a>
-                <a href="#" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
+                <a href="#" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?> onclick="displayQuickAnaliys()">
                     <span class="material-icons-sharp">
                         insights
                     </span>
@@ -393,7 +393,7 @@ $currentSmtp_2->execute();
 
         <!-- current year sales -->
         <main id="currentYearSales" <?php if($_SESSION['updatePpoint'] == 1) { echo "style='display:block;'"; } ?>>
-            <h1>User Analisis</h1>
+            <h1>User Deliveries</h1>
             <!-- Analyses -->
             
             
@@ -529,9 +529,120 @@ $currentSmtp_2->execute();
                
 
         </main>
+
+
+
+        <!-- quick Analysis -->
+        <main id="quickAna" >
+        <h1>Quick Analysis</h1>
+        <div class="analyse">
+                <div class="sales">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Sales</h3>
+                            <h1 style="padding-left:10px"><?php echo "Rs.".number_format($totalSales, 2, '.', ','); ?></h1>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="visits">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Customrs</h3>
+                            <h1 style="padding-left:10px"><?php echo $totalUsers; ?></h1>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="searches">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Points</h3>
+                            <h1 style="padding-left:10px"><?php echo number_format($points, 2, '.', ','); ?></h1>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="sales">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Sales <?php echo '20'.$currentYear; ?></h3>
+                            <h1 style="padding-left:10px"><?php echo "Rs.".number_format($sales, 2, '.', ','); ?></h1>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="visits">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Active Customrs <?php echo '20'.$currentYear; ?></h3>
+                            <h1 style="padding-left:10px"><?php echo $n; ?></h1>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="searches">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Points <?php echo '20'.$currentYear; ?></h3>
+                            <h1 style="padding-left:10px"><?php echo number_format($points, 2, '.', ','); ?></h1>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="searches">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Sales<?php echo '20'.$currentYear; ?></h3>
+                            <div>
+                                <canvas id="myChart"></canvas>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            
+            <script>
+    const labels = Utils.months({count: 2});
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Sales',
+            data: [65, 59, 80, 81, 56, 55, 40],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+        </main>
       
 
-    </div>
+
 
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
@@ -616,22 +727,33 @@ $currentSmtp_2->execute();
             document.getElementById('dashbordContainer').style.display = 'block';
             document.getElementById('userContainer').style.display = 'none';
             document.getElementById('currentYearSales').style.display = 'none';
+            document.getElementById('quickAna').style.display = 'none';
         }
 
         function DisplayUser(){
             document.getElementById('userContainer').style.display = 'block';
             document.getElementById('dashbordContainer').style.display = 'none';
             document.getElementById('currentYearSales').style.display = 'none';
+            document.getElementById('quickAna').style.display = 'none';
         }
 
         function displaycurrentYearSales(){
             document.getElementById('currentYearSales').style.display = 'block';
             document.getElementById('dashbordContainer').style.display = 'none';
             document.getElementById('userContainer').style.display = 'none';
+            document.getElementById('quickAna').style.display = 'none';
+        }
+
+        function displayQuickAnaliys(){
+            document.getElementById('currentYearSales').style.display = 'none';
+            document.getElementById('dashbordContainer').style.display = 'none';
+            document.getElementById('userContainer').style.display = 'none';
+            document.getElementById('quickAna').style.display = 'block';
         }
     </script>
 
     <script src="./index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 
 </html>
