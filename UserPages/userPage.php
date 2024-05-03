@@ -104,8 +104,6 @@ $currentYearSql_new = "SELECT * FROM CurrentYearDelivery";
 $currentSmtp_2 = $conn->prepare($currentYearSql_new);
 $currentSmtp_2->execute();
 
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
