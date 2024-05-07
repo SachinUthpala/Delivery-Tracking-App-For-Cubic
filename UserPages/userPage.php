@@ -152,7 +152,7 @@ $currentSmtp_2->execute();
                     </span>
                     <h3>Dashboard</h3>
                 </a>
-                <a href="#" onclick="DisplayUser()" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
+                <a href="#" onclick="DisplayUser()" <?php if($_SESSION['DayStart'] != 1 || $_SESSION['Admin'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
                     <span class="material-icons-sharp">
                         person_outline
                     </span>
@@ -164,7 +164,7 @@ $currentSmtp_2->execute();
                     </span>
                     <h3>Analytics</h3>
                 </a>
-                <a href="#" onclick="displaycurrentYearSales()" <?php if($_SESSION['DayStart'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
+                <a href="#" onclick="displaycurrentYearSales()" <?php if($_SESSION['DayStart'] != 1 || $_SESSION['Admin'] != 1){echo 'style="color: #f58634;display:none;"';} else{echo 'style="color: #f58634;display:flex;gap:5px;"';} ?>>
                 <span class="material-symbols-outlined">
                     local_shipping
                 </span>

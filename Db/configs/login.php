@@ -24,6 +24,7 @@ if(isset($_POST['login'])){
         if($result->rowCount() >0){
             $row = $result -> fetch(PDO::FETCH_ASSOC);
             $userPass = $row['userPassword'];
+            $_SESSION['Admin'] = $row['userAccess'];
 
             if($password == $userPass){
                 $_SESSION['login sucessfull'] = 1;
